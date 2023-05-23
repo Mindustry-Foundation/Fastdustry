@@ -1,0 +1,4 @@
+StreamBegin=0
+StreamChunk=1
+WorldStream=2
+ConnectPacket=3
