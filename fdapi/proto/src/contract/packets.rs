@@ -49,7 +49,4 @@ impl Into<Vec<u8>> for StreamBegin {
   }
 }
 
-#[derive(Debug)]
-struct NotEnoughBits;
-
 pub trait Packet : for<'f> TryFrom<&'f Vec<u8>> + Into<Vec<u8>> {}
