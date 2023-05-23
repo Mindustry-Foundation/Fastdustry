@@ -1,13 +1,11 @@
-use proto::contract::packets::{PacketType, StreamBegin};
+use proto::contract::packets::StreamBegin;
 
 fn main() {
-  let vec: Vec<u8> = PacketType::into(PacketType::StreamBegin(StreamBegin {
+  let vec: Vec<u8> = StreamBegin {
     id: 1,
     total: 213123,
     stream_type: 3
-  }));
-
-  let packet = PacketType::from(&vec);
+  }.into();
   
-  println!("Hello, world! {:?}", packet);
+  println!("Hello, world! {:?}", vec);
 }
