@@ -2,7 +2,6 @@ use std::io::{Error, ErrorKind};
 
 use bytebuffer::ByteBuffer;
 
-extern crate multi_default_trait_impl;
 #[macro_use]
 extern crate unique_type_id_derive;
 extern crate unique_type_id;
