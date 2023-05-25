@@ -1,29 +1,9 @@
-use std::{io::{Error, ErrorKind}, convert::TryFrom};
+use std::{io::Error, convert::TryFrom};
 use base64::{Engine, engine::general_purpose};
 use bytebuffer::ByteBuffer;
 use unique_type_id::UniqueTypeId;
 
-trait TypeIO {
-  fn write_short_string(&mut self, val: &str);
-
-  fn read_short_string(&mut self) -> Result<String, Error>;
-}
-
-impl TypeIO for ByteBuffer {
-  fn write_short_string(&mut self, val: &str) {
-    self.write_u16(val.len() as u16);
-    self.write_bytes(val.as_bytes());
-  }
-
-  fn read_short_string(&mut self) -> Result<String, Error> {
-    let size = self.read_u16()?;
-
-    match String::from_utf8(self.read_bytes(size as usize)?) {
-        Ok(string_result) => Ok(string_result),
-        Err(e) => Err(Error::new(ErrorKind::InvalidData, e)),
-    }
-  }
-}
+use crate::TypeIO;
 
 #[derive(UniqueTypeId, Debug)]
 #[UniqueTypeIdFile = "fdapi/proto/packets.toml"]
@@ -33,7 +13,15 @@ pub struct StreamBegin {
   pub stream_type: u8
 }
 
-impl Packet for StreamBegin {}
+impl Packet for StreamBegin {
+  fn empty() -> Self {
+    StreamBegin {
+      id: 0,
+      total: 0,
+      stream_type: 0
+    }
+  }
+}
 
 impl TryFrom<&Vec<u8>> for StreamBegin {
   type Error = Error;
@@ -61,7 +49,9 @@ impl Into<Vec<u8>> for StreamBegin {
   }
 }
 
-pub trait Packet : for<'f> TryFrom<&'f Vec<u8>> + Into<Vec<u8>> {}
+pub trait Packet : for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> {
+  fn empty() -> Self;
+}
 
 #[derive(UniqueTypeId, Debug)]
 #[UniqueTypeIdFile = "fdapi/proto/packets.toml"]
@@ -70,7 +60,14 @@ pub struct StreamChunk {
   pub data: Vec<u8>
 }
 
-impl Packet for StreamChunk {}
+impl Packet for StreamChunk {
+  fn empty() -> Self {
+    StreamChunk {
+      id: 0,
+      data: Vec::new()
+    }
+  }
+}
 
 impl TryFrom<&Vec<u8>> for StreamChunk {
   type Error = Error;
@@ -111,7 +108,21 @@ pub struct ConnectPacket {
   pub mods: Vec<String>
 }
 
-impl Packet for ConnectPacket {}
+impl Packet for ConnectPacket {
+  fn empty() -> Self {
+    ConnectPacket {
+      version: 0,
+      version_type: String::new(),
+      name: String::new(),
+      locale: String::new(),
+      usid: String::new(),
+      uuid: String::new(),
+      mobile: false,
+      color: 0,
+      mods: Vec::new()
+    }
+  }
+}
 
 impl TryFrom<&Vec<u8>> for ConnectPacket {
   type Error = Error;
