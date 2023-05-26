@@ -2,7 +2,7 @@ use std::{io::Error, convert::TryFrom, collections::VecDeque};
 use base64::{Engine, engine::general_purpose};
 use bytebuffer::ByteBuffer;
 use cgmath::Vector2;
-use content::block::Block;
+use content::block::BlockPlan;
 use unique_type_id::UniqueTypeId;
 
 use crate::{ReadStruct, WriteStruct};
@@ -141,10 +141,10 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
     let uuid = Engine::encode(&general_purpose::STANDARD, uuid_bytes);
     let mobile = byte_buffer.read_u8()? == 1;
     let color = byte_buffer.read_u32()?;
-    let totalMods = byte_buffer.read_u8()?;
+    let total_mods = byte_buffer.read_u8()?;
     let mut mods = Vec::<String>::new();
 
-    for i in 0..totalMods {
+    for _i in 0..total_mods {
       mods.push(byte_buffer.read_struct()?);
     }
 
@@ -181,18 +181,19 @@ impl Into<Vec<u8>> for ConnectPacket {
   }
 }
 
-struct ClientSnapshotPacket<'a> {
+#[derive(Debug)]
+pub struct ClientSnapshotPacket<'a> {
   snapshot_id: u32,
+  mining_pos: i32,
   unit_id: u32,
   pos: Vector2<f32>,
   mouse_pos: Vector2<f32>,
   view_pos: Vector2<f32>,
   view_size: Vector2<f32>,
   velocity: Vector2<f32>,
-  mining: Vector2<u32>,
   rotation: f32,
   base_rotation: f32,
-  plans: VecDeque<&'a dyn Block>,
+  plans: VecDeque<BlockPlan<'a>>,
   dead: bool,
   boosting: bool,
   shooting: bool,
@@ -204,13 +205,13 @@ impl Packet for ClientSnapshotPacket<'_> {
   fn empty() -> Self {
     ClientSnapshotPacket {
       snapshot_id: 0,
+      mining_pos: 0,
       unit_id: 0,
       pos: Vector2::new(0.0, 0.0),
       mouse_pos: Vector2::new(0.0, 0.0),
       view_pos: Vector2::new(0.0, 0.0),
       view_size: Vector2::new(0.0, 0.0),
       velocity: Vector2::new(0.0, 0.0),
-      mining: Vector2::new(0, 0),
       rotation: 0.0,
       base_rotation: 0.0,
       plans: VecDeque::new(),
@@ -218,23 +219,33 @@ impl Packet for ClientSnapshotPacket<'_> {
       boosting: false,
       shooting: false,
       chatting: false,
-      building: false,
-      
+      building: false
     }
   }
 }
 
 impl Into<Vec<u8>> for ClientSnapshotPacket<'_> {
   fn into(self) -> Vec<u8> {
-    // let mut byte_buffer = ByteBuffer::new();
+    let mut byte_buffer = ByteBuffer::new();
 
-    // byte_buffer.write_u32(self.snapshot_id);
-    // byte_buffer.write_u32(self.unit_id);
-    // byte_buffer.write_u8(self.dead as u8);
-    // byte_buffer.write_f32()
+    byte_buffer.write_u32(self.snapshot_id);
+    byte_buffer.write_u32(self.unit_id);
+    byte_buffer.write_u8(self.dead as u8);
+    byte_buffer.write_struct(&self.pos);
+    byte_buffer.write_struct(&self.mouse_pos);
+    byte_buffer.write_f32(self.rotation);
+    byte_buffer.write_f32(self.base_rotation);
+    byte_buffer.write_struct(&self.velocity);
+    byte_buffer.write_i32(self.mining_pos);
+    byte_buffer.write_u8(self.boosting as u8);
+    byte_buffer.write_u8(self.shooting as u8);
+    byte_buffer.write_u8(self.chatting as u8);
+    byte_buffer.write_u8(self.building as u8);
+    // TODO: byte_buffer.write_struct(&self.plans);
+    byte_buffer.write_struct(&self.view_pos);
+    byte_buffer.write_struct(&self.view_size);
 
-    // byte_buffer.into_vec()
-    todo!()
+    byte_buffer.into_vec()
   }
 }
 
@@ -242,6 +253,25 @@ impl TryFrom<&Vec<u8>> for ClientSnapshotPacket<'_> {
   type Error = Error;
 
   fn try_from(byte_vector: &Vec<u8>) -> Result<Self, Self::Error> {
-    todo!()
+    let mut byte_buffer = ByteBuffer::from_bytes(byte_vector);
+
+    Ok(ClientSnapshotPacket {
+      snapshot_id: byte_buffer.read_u32()?,
+      unit_id: byte_buffer.read_u32()?,
+      dead: byte_buffer.read_u8()? != 0,
+      pos: byte_buffer.read_struct()?,
+      mouse_pos: byte_buffer.read_struct()?,
+      rotation: byte_buffer.read_f32()?,
+      base_rotation: byte_buffer.read_f32()?,
+      velocity: byte_buffer.read_struct()?,
+      mining_pos: byte_buffer.read_i32()?,
+      boosting: byte_buffer.read_u8()? != 0,
+      shooting: byte_buffer.read_u8()? != 0,
+      chatting: byte_buffer.read_u8()? != 0,
+      building: byte_buffer.read_u8()? != 0,
+      plans: VecDeque::new(),
+      view_pos: byte_buffer.read_struct()?,
+      view_size: byte_buffer.read_struct()?
+    })
   }
 }

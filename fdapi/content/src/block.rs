@@ -1,6 +1,19 @@
+use std::{fmt::Formatter, any::TypeId};
+
 use crate::{item::Item, fluid::Fluid};
 
 pub trait Block {}
+
+pub struct BlockPlan<'a> {
+  block: &'a dyn Block
+}
+
+impl<'a> std::fmt::Debug for BlockPlan<'a> {
+  fn fmt(&self, formatter: &mut Formatter<'_>) -> std::fmt::Result {
+    formatter.debug_struct("BlockPlan")
+      .finish()
+  }
+}
 
 pub trait ItemsConsumer<'a> : Block + TryConsume<&'a dyn Item> {}
 
