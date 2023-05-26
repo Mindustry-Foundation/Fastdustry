@@ -1,2 +1,2 @@
 [workspace]
-members = ["fdapi/proto", "fdapi/demo"]
+members = ["fdapi/proto", "fdapi/demo", "fdapi/content"]

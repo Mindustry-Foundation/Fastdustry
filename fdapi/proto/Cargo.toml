@@ -2,7 +2,7 @@
 name = "fastdustry-proto"
 version = "0.0.1"
 authors = ["OSPx", "Ademun", "SSTentacleSS"]
-description = "A module that implements basic Mindustry data prototypes"
+description = "A module that implements basic Mindustry low-level data prototypes"
 
 [lib]
 name = "proto"
@@ -10,6 +10,8 @@ path = "src/lib.rs"
 crate-type = ["lib"]
 
 [dependencies]
+cgmath = { version = "0.18.0", features = ["swizzle"] }
+fastdustry-content = { path = "../content" }
 unique-type-id-derive = "1.2.0"
 unique-type-id = "1.2.0"
 bytebuffer = "2.1.1"

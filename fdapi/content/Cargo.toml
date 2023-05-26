@@ -1,0 +1,13 @@
+[package]
+name = "fastdustry-content"
+version = "0.0.1"
+authors = ["OSPx", "Ademun", "SSTentacleSS"]
+description = "A module that implements basic Mindustry content"
+
+[lib]
+name = "content"
+path = "src/lib.rs"
+crate-type = ["lib"]
+
+[dependencies]
+serde = { version = "1.0.163", features = ["derive"] }
