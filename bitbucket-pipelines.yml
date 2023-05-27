@@ -25,7 +25,7 @@ pipelines:
             - pipe: atlassian/bitbucket-upload-file:0.3.4
               variables:
                 BITBUCKET_USERNAME: $BITBUCKET_USERNAME
-                BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+                BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
                 FILENAME: "$BITBUCKET_CLONE_DIR/target/release/fastdustry-demo"
 definitions:
   caches:
