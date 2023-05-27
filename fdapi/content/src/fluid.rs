@@ -1,3 +1,1 @@
-pub trait Fluid {
-
-}
+pub trait Fluid {}

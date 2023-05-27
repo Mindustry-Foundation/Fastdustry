@@ -1,7 +1,7 @@
-use cgmath::Vector2;
+use vectora::types::vector::Vector2d;
 
 pub struct Tile {
-  pub pos: Vector2<u32>
+  pub pos: Vector2d<u32>,
 }
 
 impl Tile {}

@@ -10,7 +10,7 @@ path = "src/lib.rs"
 crate-type = ["lib"]
 
 [dependencies]
-cgmath = { version = "0.18.0", features = ["swizzle"] }
+vectora = "0.8.1"
 fastdustry-content = { path = "../content" }
 unique-type-id-derive = "1.2.0"
 unique-type-id = "1.2.0"

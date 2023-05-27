@@ -1,8 +1,8 @@
-use std::io::{Error, ErrorKind};
+use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use cgmath::Vector2;
 use content::tile::Tile;
+use vectora::types::vector::Vector2d;
 
 #[macro_use]
 extern crate unique_type_id_derive;
@@ -10,19 +10,19 @@ extern crate unique_type_id;
 extern crate bytebuffer;
 extern crate content;
 extern crate base64;
-extern crate cgmath;
+extern crate vectora;
 
-impl WriteStruct<&Vector2<u32>> for ByteBuffer {
-  fn write_struct(&mut self, val: &Vector2<u32>) {
-    self.write_u32(val.x);
-    self.write_u32(val.y);
+impl WriteStruct<&Vector2d<u32>> for ByteBuffer {
+  fn write_struct(&mut self, val: &Vector2d<u32>) {
+    self.write_u32(*val.components.get(0).unwrap_or(&0));
+    self.write_u32(*val.components.get(1).unwrap_or(&0));
   }
 }
 
-impl WriteStruct<&Vector2<f32>> for ByteBuffer {
-  fn write_struct(&mut self, val: &Vector2<f32>) {
-    self.write_f32(val.x);
-    self.write_f32(val.y);
+impl WriteStruct<&Vector2d<f32>> for ByteBuffer {
+  fn write_struct(&mut self, val: &Vector2d<f32>) {
+    self.write_f32(*val.components.get(0).unwrap_or(&0.0));
+    self.write_f32(*val.components.get(1).unwrap_or(&0.0));
   }
 }
 
@@ -39,21 +39,15 @@ impl WriteStruct<&Tile> for ByteBuffer {
   }
 }
 
-impl ReadStruct<Vector2<u32>> for ByteBuffer {
-  fn read_struct(&mut self) -> Result<Vector2<u32>, Error> {
-    Ok(Vector2::new(
-      self.read_u32()?,
-      self.read_u32()?
-    ))
+impl ReadStruct<Vector2d<u32>> for ByteBuffer {
+  fn read_struct(&mut self) -> Result<Vector2d<u32>, Error> {
+    Ok(Vector2d::from([self.read_u32()?, self.read_u32()?]))
   }
 }
 
-impl ReadStruct<Vector2<f32>> for ByteBuffer {
-  fn read_struct(&mut self) -> Result<Vector2<f32>, Error> {
-    Ok(Vector2::new(
-      self.read_f32()?,
-      self.read_f32()?
-    ))
+impl ReadStruct<Vector2d<f32>> for ByteBuffer {
+  fn read_struct(&mut self) -> Result<Vector2d<f32>, Error> {
+    Ok(Vector2d::from([self.read_f32()?, self.read_f32()?]))
   }
 }
 
@@ -71,7 +65,7 @@ impl ReadStruct<String> for ByteBuffer {
 impl ReadStruct<Tile> for ByteBuffer {
   fn read_struct(&mut self) -> Result<Tile, Error> {
     Ok(Tile {
-      pos: self.read_struct()?
+      pos: self.read_struct()?,
     })
   }
 }

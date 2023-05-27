@@ -1,41 +1,72 @@
-use std::{io::Error, convert::TryFrom, collections::VecDeque};
-use base64::{Engine, engine::general_purpose};
+use base64::{ engine::general_purpose, Engine };
 use bytebuffer::ByteBuffer;
-use cgmath::Vector2;
 use content::block::BlockPlan;
-use unique_type_id::UniqueTypeId;
+use vectora::types::vector::Vector2d;
+use std::{ collections::VecDeque, convert::TryFrom, io::Error };
 
-use crate::{ReadStruct, WriteStruct};
+use crate::{ ReadStruct, WriteStruct };
 
-#[derive(UniqueTypeId, Debug)]
-#[UniqueTypeIdFile = "fdapi/proto/packets.toml"]
+#[derive(Debug, Default)]
 pub struct StreamBegin {
   pub id: u32,
   pub total: u32,
-  pub stream_type: u8
+  pub stream_type: u8,
 }
 
-impl Packet for StreamBegin {
-  fn empty() -> Self {
-    StreamBegin {
-      id: 0,
-      total: 0,
-      stream_type: 0
-    }
-  }
+#[derive(Debug, Default)]
+pub struct ConnectPacket {
+  pub version: u32,
+  pub version_type: String,
+  pub name: String,
+  pub locale: String,
+  pub usid: String,
+  pub uuid: String,
+  pub mobile: bool,
+  pub color: u32,
+  pub mods: Vec<String>,
 }
+
+#[derive(Debug, Default)]
+pub struct StreamChunk {
+  pub id: u32,
+  pub data: Vec<u8>,
+}
+
+#[derive(Debug, Default)]
+pub struct ClientSnapshotPacket<'a> {
+  snapshot_id: u32,
+  mining_pos: i32,
+  unit_id: u32,
+  pos: Vector2d<f32>,
+  mouse_pos: Vector2d<f32>,
+  view_pos: Vector2d<f32>,
+  view_size: Vector2d<f32>,
+  velocity: Vector2d<f32>,
+  rotation: f32,
+  base_rotation: f32,
+  plans: VecDeque<BlockPlan<'a>>,
+  dead: bool,
+  boosting: bool,
+  shooting: bool,
+  chatting: bool,
+  building: bool,
+}
+
+impl Packet for StreamBegin {}
 
 impl TryFrom<&Vec<u8>> for StreamBegin {
   type Error = Error;
 
   fn try_from(byte_vector: &Vec<u8>) -> Result<Self, Self::Error> {
     let mut byte_buffer = ByteBuffer::from_bytes(byte_vector);
-      let id = byte_buffer.read_u32()?;
-      let total = byte_buffer.read_u32()?;
-      let stream_type = byte_buffer.read_u8()?;
-      Ok(
-        StreamBegin { id, total, stream_type }
-      )
+    let id = byte_buffer.read_u32()?;
+    let total = byte_buffer.read_u32()?;
+    let stream_type = byte_buffer.read_u8()?;
+    Ok(StreamBegin {
+      id,
+      total,
+      stream_type,
+    })
   }
 }
 
@@ -51,25 +82,7 @@ impl Into<Vec<u8>> for StreamBegin {
   }
 }
 
-pub trait Packet : for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> {
-  fn empty() -> Self;
-}
-
-#[derive(UniqueTypeId, Debug)]
-#[UniqueTypeIdFile = "fdapi/proto/packets.toml"]
-pub struct StreamChunk {
-  pub id: u32,
-  pub data: Vec<u8>
-}
-
-impl Packet for StreamChunk {
-  fn empty() -> Self {
-    StreamChunk {
-      id: 0,
-      data: Vec::new()
-    }
-  }
-}
+impl Packet for StreamChunk {}
 
 impl TryFrom<&Vec<u8>> for StreamChunk {
   type Error = Error;
@@ -77,13 +90,12 @@ impl TryFrom<&Vec<u8>> for StreamChunk {
   fn try_from(byte_vector: &Vec<u8>) -> Result<Self, Self::Error> {
     let mut byte_buffer = ByteBuffer::from_bytes(byte_vector);
     let id = byte_buffer.read_u32()?;
-    let data = byte_buffer.read_u32()
-      .map(|length| byte_buffer.read_bytes(length as usize)).unwrap()?;
+    let data = byte_buffer
+      .read_u32()
+      .map(|length| byte_buffer.read_bytes(length as usize))
+      .unwrap()?;
 
-    Ok(StreamChunk {
-      id,
-      data
-    })
+    Ok(StreamChunk { id, data })
   }
 }
 
@@ -96,35 +108,7 @@ impl Into<Vec<u8>> for StreamChunk {
   }
 }
 
-#[derive(UniqueTypeId, Debug)]
-#[UniqueTypeIdFile = "fdapi/proto/packets.toml"]
-pub struct ConnectPacket {
-  pub version: u32,
-  pub version_type: String,
-  pub name: String,
-  pub locale: String,
-  pub usid: String,
-  pub uuid: String,
-  pub mobile: bool,
-  pub color: u32,
-  pub mods: Vec<String>
-}
-
-impl Packet for ConnectPacket {
-  fn empty() -> Self {
-    ConnectPacket {
-      version: 0,
-      version_type: String::new(),
-      name: String::new(),
-      locale: String::new(),
-      usid: String::new(),
-      uuid: String::new(),
-      mobile: false,
-      color: 0,
-      mods: Vec::new()
-    }
-  }
-}
+impl Packet for ConnectPacket {}
 
 impl TryFrom<&Vec<u8>> for ConnectPacket {
   type Error = Error;
@@ -151,12 +135,13 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
     Ok(ConnectPacket {
       version,
       version_type,
-      name, locale,
+      name,
+      locale,
       usid,
       uuid,
       mobile,
       color,
-      mods
+      mods,
     })
   }
 }
@@ -164,13 +149,14 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
 impl Into<Vec<u8>> for ConnectPacket {
   fn into(self) -> Vec<u8> {
     let mut byte_buffer = ByteBuffer::new();
+
     byte_buffer.write_u32(self.version);
     byte_buffer.write_struct(&self.version_type);
     byte_buffer.write_struct(&self.name);
     byte_buffer.write_struct(&self.locale);
     byte_buffer.write_struct(&self.usid);
     byte_buffer.write_bytes(&Engine::decode(&general_purpose::STANDARD, self.uuid).unwrap());
-    byte_buffer.write_u8(if self.mobile {1} else {0});
+    byte_buffer.write_u8(if self.mobile { 1 } else { 0 });
     byte_buffer.write_u32(self.color);
 
     for i in self.mods {
@@ -181,48 +167,7 @@ impl Into<Vec<u8>> for ConnectPacket {
   }
 }
 
-#[derive(Debug)]
-pub struct ClientSnapshotPacket<'a> {
-  snapshot_id: u32,
-  mining_pos: i32,
-  unit_id: u32,
-  pos: Vector2<f32>,
-  mouse_pos: Vector2<f32>,
-  view_pos: Vector2<f32>,
-  view_size: Vector2<f32>,
-  velocity: Vector2<f32>,
-  rotation: f32,
-  base_rotation: f32,
-  plans: VecDeque<BlockPlan<'a>>,
-  dead: bool,
-  boosting: bool,
-  shooting: bool,
-  chatting: bool,
-  building: bool
-}
-
-impl Packet for ClientSnapshotPacket<'_> {
-  fn empty() -> Self {
-    ClientSnapshotPacket {
-      snapshot_id: 0,
-      mining_pos: 0,
-      unit_id: 0,
-      pos: Vector2::new(0.0, 0.0),
-      mouse_pos: Vector2::new(0.0, 0.0),
-      view_pos: Vector2::new(0.0, 0.0),
-      view_size: Vector2::new(0.0, 0.0),
-      velocity: Vector2::new(0.0, 0.0),
-      rotation: 0.0,
-      base_rotation: 0.0,
-      plans: VecDeque::new(),
-      dead: false,
-      boosting: false,
-      shooting: false,
-      chatting: false,
-      building: false
-    }
-  }
-}
+impl Packet for ClientSnapshotPacket<'_> {}
 
 impl Into<Vec<u8>> for ClientSnapshotPacket<'_> {
   fn into(self) -> Vec<u8> {
@@ -271,7 +216,9 @@ impl TryFrom<&Vec<u8>> for ClientSnapshotPacket<'_> {
       building: byte_buffer.read_u8()? != 0,
       plans: VecDeque::new(),
       view_pos: byte_buffer.read_struct()?,
-      view_size: byte_buffer.read_struct()?
+      view_size: byte_buffer.read_struct()?,
     })
   }
 }
+
+pub trait Packet: for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> + Default {}

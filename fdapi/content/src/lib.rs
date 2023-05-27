@@ -1,4 +1,4 @@
-extern crate cgmath;
+extern crate vectora;
 extern crate serde;
 
 pub mod player_info;

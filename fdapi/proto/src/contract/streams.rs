@@ -1,19 +1,19 @@
-use std::io::{Write, Result};
+use std::io::{ Write, Result };
 
-use super::packets::{Packet, StreamBegin};
+use super::packets::{ Packet, StreamBegin };
 
-pub struct StreamPacket<T : Packet> {
+pub struct StreamPacket<T: Packet> {
   begin: StreamBegin,
   packet: T,
-  buffer: Vec<u8>
+  buffer: Vec<u8>,
 }
 
 impl<T: Packet> StreamPacket<T> {
   fn new(begin: StreamBegin) -> Self {
     StreamPacket {
       begin,
-      packet: T::empty(),
-      buffer: Vec::new()
+      packet: T::default(),
+      buffer: Vec::new(),
     }
   }
 }
