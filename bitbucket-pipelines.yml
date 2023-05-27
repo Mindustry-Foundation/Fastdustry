@@ -24,7 +24,7 @@ pipelines:
             - echo "Building libs and applications"     ; cargo build --release
             - pipe: atlassian/bitbucket-upload-file:0.3.4
               variables:
-                BITBUCKET_USERNAME: $BITBUCKET_USERNAME
+                BITBUCKET_USERNAME: SSTentacleSS
                 BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
                 FILENAME: "$BITBUCKET_CLONE_DIR/target/release/fastdustry-demo"
 definitions:
