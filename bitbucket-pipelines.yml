@@ -2,16 +2,17 @@ image: rustlang/rust:nightly
 
 pipelines:
   default:
-    - parallel:
-      - step:
-          name: "Build and Test"
-          caches:
-            - cargo
-            - rust-target
-          script:
-            - echo "Setup git with read/write access"   ; sh scripts/setup-git.sh
-            - echo "Testing code"                       ; cargo test
-            - echo "Building libs and applications"     ; cargo build --release
+    - step:
+        name: "Build and Test"
+        caches:
+          - cargo
+          - rust-target
+        script:
+          - echo "Setup git with read/write access"   ; sh scripts/setup-git.sh
+          - echo "Testing code"                       ; cargo test
+          - echo "Building libs and applications"     ; cargo build --release
+  branches:
+    master:
       - step:
           name: "Release Artifacts"
           caches:
