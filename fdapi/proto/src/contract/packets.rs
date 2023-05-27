@@ -34,22 +34,22 @@ pub struct StreamChunk {
 
 #[derive(Debug, Default)]
 pub struct ClientSnapshotPacket<'a> {
-  snapshot_id: u32,
-  mining_pos: i32,
-  unit_id: u32,
-  pos: Vector2d<f32>,
-  mouse_pos: Vector2d<f32>,
-  view_pos: Vector2d<f32>,
-  view_size: Vector2d<f32>,
-  velocity: Vector2d<f32>,
-  rotation: f32,
-  base_rotation: f32,
-  plans: VecDeque<BlockPlan<'a>>,
-  dead: bool,
-  boosting: bool,
-  shooting: bool,
-  chatting: bool,
-  building: bool,
+  pub snapshot_id: u32,
+  pub mining_pos: i32,
+  pub unit_id: u32,
+  pub pos: Vector2d<f32>,
+  pub mouse_pos: Vector2d<f32>,
+  pub view_pos: Vector2d<f32>,
+  pub view_size: Vector2d<f32>,
+  pub velocity: Vector2d<f32>,
+  pub rotation: f32,
+  pub base_rotation: f32,
+  pub plans: VecDeque<BlockPlan<'a>>,
+  pub dead: bool,
+  pub boosting: bool,
+  pub shooting: bool,
+  pub chatting: bool,
+  pub building: bool,
 }
 
 impl Packet for StreamBegin {}

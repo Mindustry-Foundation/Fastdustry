@@ -1,2 +1,8 @@
 [workspace]
 members = ["fdapi/proto", "fdapi/demo", "fdapi/content"]
+
+[profile.release]
+opt-level = 'z'
+panic = "abort"
+strip = true
+lto = true

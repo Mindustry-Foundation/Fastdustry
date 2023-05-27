@@ -4,9 +4,6 @@ use bytebuffer::ByteBuffer;
 use content::tile::Tile;
 use vectora::types::vector::Vector2d;
 
-#[macro_use]
-extern crate unique_type_id_derive;
-extern crate unique_type_id;
 extern crate bytebuffer;
 extern crate content;
 extern crate base64;

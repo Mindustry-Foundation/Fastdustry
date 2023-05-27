@@ -73,14 +73,13 @@ fn main() {
     0,
     0
   ];
+
   let data: Vec<u8> = raw
     .iter()
     .map(|el| *el as u8)
     .to_owned()
     .collect();
-  let mut buf = ByteBuffer::from_vec(data);
-
-  let a = buf.read_u8();
+  let buf = ByteBuffer::from_vec(data);
 
   let c = ClientSnapshotPacket::try_from(&buf.into_vec()).unwrap();
 

@@ -1,11 +1,11 @@
-use std::{ fmt::Formatter, any::TypeId };
+use std::fmt::Formatter;
 
 use crate::{ item::Item, fluid::Fluid };
 
 pub trait Block {}
 
 pub struct BlockPlan<'a> {
-  block: &'a dyn Block,
+  pub block: &'a dyn Block,
 }
 
 impl<'a> std::fmt::Debug for BlockPlan<'a> {

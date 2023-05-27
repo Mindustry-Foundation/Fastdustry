@@ -3,9 +3,9 @@ use std::io::{ Write, Result };
 use super::packets::{ Packet, StreamBegin };
 
 pub struct StreamPacket<T: Packet> {
-  begin: StreamBegin,
-  packet: T,
-  buffer: Vec<u8>,
+  pub begin: StreamBegin,
+  pub packet: T,
+  pub buffer: Vec<u8>,
 }
 
 impl<T: Packet> StreamPacket<T> {
