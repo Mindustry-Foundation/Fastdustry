@@ -1,0 +1,28 @@
+image: rustlang/rust:nightly
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: "Build and Test"
+          caches:
+            - cargo
+            - rust-target
+          script:
+            - echo "Setup git with read/write access"   ; sh scripts/setup-git.sh
+            - echo "Testing code"                       ; cargo test
+            - echo "Building libs and applications"     ; cargo build --release
+      - step:
+          name: "Release Artifacts"
+          caches:
+            - rust-target
+          script:
+            - pipe: atlassian/bitbucket-upload-file:0.3.4
+              variables:
+                BITBUCKET_USERNAME: $BITBUCKET_USERNAME
+                BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+                FILENAME: "target/release/fastdustry*"
+definitions:
+  caches:
+    cargo: /usr/local/cargo
+    rust-target: $BITBUCKET_CLONE_DIR/target
