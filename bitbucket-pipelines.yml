@@ -26,7 +26,7 @@ pipelines:
               variables:
                 BITBUCKET_USERNAME: SSTentacleSS
                 BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
-                FILENAME: "$BITBUCKET_CLONE_DIR/target/release/fastdustry-demo"
+                FILENAME: "$BITBUCKET_CLONE_DIR/target/release/fastdustry*"
 definitions:
   caches:
     cargo: /usr/local/cargo
