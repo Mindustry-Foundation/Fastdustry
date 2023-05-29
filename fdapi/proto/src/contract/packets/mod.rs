@@ -9,5 +9,6 @@ mod stream_begin;
 mod connect_packet;
 mod stream_chunk;
 mod client_snapshot_packet;
+mod world_data_begin;
 
 pub trait Packet: for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> + Default {}
