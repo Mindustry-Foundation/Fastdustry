@@ -1,4 +1,4 @@
-use std::{ convert::{ TryFrom, TryInto }, io::{ Error, ErrorKind }, ops::Range };
+use std::{ convert::TryFrom, io::Error, ops::Range };
 
 use base64::{ Engine, engine::general_purpose };
 use bytebuffer::ByteBuffer;
@@ -12,7 +12,7 @@ pub struct ConnectPacket {
   pub name: String,
   pub locale: String,
   pub usid: String,
-  pub uuid: [u8; 16],
+  pub uuid: String,
   pub mobile: bool,
   pub color: u32,
   pub mods: Vec<String>,
@@ -32,10 +32,8 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
     let name = byte_buffer.read_struct()?;
     let locale = byte_buffer.read_struct()?;
     let usid = byte_buffer.read_struct()?;
-    let uuid: [u8; 16] = byte_buffer
-      .read_bytes(16)?
-      .try_into()
-      .map_err(|_| Error::new(ErrorKind::InvalidData, "Invalid UUID size"))?;
+    let uuid_bytes = byte_buffer.read_bytes(16)?;
+    let uuid = Engine::encode(&general_purpose::STANDARD, uuid_bytes);
     let mobile = byte_buffer.read_u8()? == 1;
     let color = byte_buffer.read_u32()?;
     let total_mods = byte_buffer.read_u8()?;
@@ -45,7 +43,7 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
       end: total_mods,
     })
       .map(
-        |_| -> Result<(), Error> {
+        |_| {
           mods.push(byte_buffer.read_struct()?);
           Ok(())
         }
