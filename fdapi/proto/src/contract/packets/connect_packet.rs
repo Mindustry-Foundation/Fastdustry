@@ -42,12 +42,10 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
       start: 0,
       end: total_mods,
     })
-      .map(
-        |_| {
-          mods.push(byte_buffer.read_struct()?);
-          Ok(())
-        }
-      )
+      .map(|_| {
+        mods.push(byte_buffer.read_struct()?);
+        Ok(())
+      })
       .collect::<Result<(), Error>>()?;
 
     Ok(ConnectPacket {
@@ -77,10 +75,7 @@ impl Into<Vec<u8>> for ConnectPacket {
     byte_buffer.write_u8(if self.mobile { 1 } else { 0 });
     byte_buffer.write_u32(self.color);
 
-    for i in self.mods {
-      byte_buffer.write_struct(&i);
-    }
-
+    self.mods.iter().for_each(|mod_name| byte_buffer.write_struct(mod_name));
     byte_buffer.into_vec()
   }
 }
