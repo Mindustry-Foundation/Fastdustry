@@ -29,31 +29,6 @@ pub struct ClientSnapshotPacket<'a> {
 
 impl Packet for ClientSnapshotPacket<'_> {}
 
-impl Into<Vec<u8>> for ClientSnapshotPacket<'_> {
-  fn into(self) -> Vec<u8> {
-    let mut byte_buffer = ByteBuffer::new();
-
-    byte_buffer.write_u32(self.snapshot_id);
-    byte_buffer.write_u32(self.unit_id);
-    byte_buffer.write_u8(self.dead as u8);
-    byte_buffer.write_struct(&self.pos);
-    byte_buffer.write_struct(&self.mouse_pos);
-    byte_buffer.write_f32(self.rotation);
-    byte_buffer.write_f32(self.base_rotation);
-    byte_buffer.write_struct(&self.velocity);
-    byte_buffer.write_i32(self.mining_pos);
-    byte_buffer.write_u8(self.boosting as u8);
-    byte_buffer.write_u8(self.shooting as u8);
-    byte_buffer.write_u8(self.chatting as u8);
-    byte_buffer.write_u8(self.building as u8);
-    // TODO: byte_buffer.write_struct(&self.plans);
-    byte_buffer.write_struct(&self.view_pos);
-    byte_buffer.write_struct(&self.view_size);
-
-    byte_buffer.into_vec()
-  }
-}
-
 impl TryFrom<&Vec<u8>> for ClientSnapshotPacket<'_> {
   type Error = Error;
 
@@ -78,5 +53,29 @@ impl TryFrom<&Vec<u8>> for ClientSnapshotPacket<'_> {
       view_pos: byte_buffer.read_struct()?,
       view_size: byte_buffer.read_struct()?,
     })
+  }
+}
+
+impl Into<Vec<u8>> for ClientSnapshotPacket<'_> {
+  fn into(self) -> Vec<u8> {
+    let mut byte_buffer = ByteBuffer::new();
+
+    byte_buffer.write_u32(self.snapshot_id);
+    byte_buffer.write_u32(self.unit_id);
+    byte_buffer.write_u8(self.dead as u8);
+    byte_buffer.write_struct(&self.pos);
+    byte_buffer.write_struct(&self.mouse_pos);
+    byte_buffer.write_f32(self.rotation);
+    byte_buffer.write_f32(self.base_rotation);
+    byte_buffer.write_struct(&self.velocity);
+    byte_buffer.write_i32(self.mining_pos);
+    byte_buffer.write_u8(self.boosting as u8);
+    byte_buffer.write_u8(self.shooting as u8);
+    byte_buffer.write_u8(self.chatting as u8);
+    byte_buffer.write_u8(self.building as u8);
+    // TODO: byte_buffer.write_struct(&self.plans);
+    byte_buffer.write_struct(&self.view_pos);
+    byte_buffer.write_struct(&self.view_size);
+    byte_buffer.into_vec()
   }
 }

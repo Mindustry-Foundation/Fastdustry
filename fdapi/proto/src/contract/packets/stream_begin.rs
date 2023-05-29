@@ -33,7 +33,6 @@ impl Into<Vec<u8>> for StreamBegin {
     byte_buffer.write_u32(self.id);
     byte_buffer.write_u32(self.total);
     byte_buffer.write_u8(self.stream_type);
-
     byte_buffer.into_vec()
   }
 }

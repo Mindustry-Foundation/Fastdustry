@@ -10,5 +10,6 @@ path = "src/lib.rs"
 crate-type = ["lib"]
 
 [dependencies]
+init_trait = "0.2.0"
 serde = { version = "1.0.163", features = ["derive"] }
 vectora = "0.8.1"
