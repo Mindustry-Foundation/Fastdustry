@@ -34,7 +34,7 @@ impl TryFrom<&Vec<u8>> for ConnectPacket {
     let usid = byte_buffer.read_struct()?;
     let uuid_bytes = byte_buffer.read_bytes(16)?;
     let uuid = Engine::encode(&general_purpose::STANDARD, uuid_bytes);
-    let mobile = byte_buffer.read_u8()? == 1;
+    let mobile = byte_buffer.read_u8()? != 0;
     let color = byte_buffer.read_u32()?;
     let total_mods = byte_buffer.read_u8()?;
 
@@ -72,7 +72,7 @@ impl Into<Vec<u8>> for ConnectPacket {
     byte_buffer.write_struct(&self.locale);
     byte_buffer.write_struct(&self.usid);
     byte_buffer.write_bytes(&Engine::decode(&general_purpose::STANDARD, self.uuid).unwrap());
-    byte_buffer.write_u8(if self.mobile { 1 } else { 0 });
+    byte_buffer.write_u8(self.mobile as u8);
     byte_buffer.write_u32(self.color);
 
     self.mods.iter().for_each(|mod_name| byte_buffer.write_struct(mod_name));

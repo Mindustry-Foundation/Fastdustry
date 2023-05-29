@@ -1,13 +1,16 @@
 use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{ tile::Tile, team::{ Team, TEAMS } };
+use content::{ tile::Tile, team::{ Team, TEAMS }, unit::Unit };
 use vectora::types::vector::Vector2d;
 
 extern crate bytebuffer;
 extern crate content;
 extern crate base64;
 extern crate vectora;
+#[macro_use]
+extern crate num_derive;
+extern crate num_traits;
 
 impl WriteStruct<&Vector2d<u32>> for ByteBuffer {
   fn write_struct(&mut self, val: &Vector2d<u32>) {
@@ -90,5 +93,6 @@ trait WriteStruct<S> {
 trait ReadStruct<S> {
   fn read_struct(&mut self) -> Result<S, Error>;
 }
+
 
 pub mod contract;

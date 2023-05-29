@@ -8,3 +8,4 @@ pub mod fluid;
 pub mod item;
 pub mod tile;
 pub mod team;
+pub mod unit;

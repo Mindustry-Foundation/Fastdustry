@@ -14,3 +14,5 @@ fastdustry-content = { path = "../content" }
 bytebuffer = "2.1.1"
 vectora = "0.8.1"
 base64 = "0.21.1"
+num-derive = "0.3.3"
+num-traits = "0.2.15"
