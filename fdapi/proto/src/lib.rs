@@ -1,7 +1,7 @@
-use std::{io::{ Error, ErrorKind }, ops::Index, any::Any};
+use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{tile::Tile, team::Team};
+use content::{ tile::Tile, team::{ Team, TEAMS } };
 use vectora::types::vector::Vector2d;
 
 extern crate bytebuffer;
@@ -38,7 +38,7 @@ impl WriteStruct<&Tile> for ByteBuffer {
 
 impl WriteStruct<&Team> for ByteBuffer {
   fn write_struct(&mut self, val: &Team) {
-    self.write_u16(val.type_id())
+    self.write_u16(val.id())
   }
 }
 
@@ -73,15 +73,13 @@ impl ReadStruct<Tile> for ByteBuffer {
   }
 }
 
-impl ReadStruct<Team> for ByteBuffer {
-  fn read_struct(&mut self) -> Result<Team, Error> {
-    let team_id = self.read_u8();
+impl<'a> ReadStruct<&'a Team> for ByteBuffer {
+  fn read_struct(&mut self) -> Result<&'a Team, Error> {
+    let team_id = self.read_u8()?;
 
-    Team::TEAMS.get(team_id)
-      .ok_or(Error::new(
-        ErrorKind::NotFound,
-        format!("team with id {id} does not exist", id = team_id)
-      ))
+    TEAMS.get(team_id as usize).ok_or(
+      Error::new(ErrorKind::NotFound, format!("team with id {id} does not exist", id = team_id))
+    )
   }
 }
 

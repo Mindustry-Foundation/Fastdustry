@@ -1,12 +1,12 @@
-use std::{io::Error, convert::TryFrom};
+use std::{ io::Error, convert::TryFrom };
 use bytebuffer::ByteBuffer;
-use crate::{ReadStruct, WriteStruct};
+use crate::{ ReadStruct, WriteStruct };
 use super::Packet;
 
 #[derive(Debug, Default)]
 struct WarningToastPacket {
   glyph: u32,
-  text: String
+  text: String,
 }
 
 impl Packet for WarningToastPacket {}
@@ -19,7 +19,7 @@ impl TryFrom<&Vec<u8>> for WarningToastPacket {
 
     Ok(WarningToastPacket {
       glyph: byte_buffer.read_u32()?,
-      text: byte_buffer.read_struct()?
+      text: byte_buffer.read_struct()?,
     })
   }
 }

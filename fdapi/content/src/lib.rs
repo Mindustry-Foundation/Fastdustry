@@ -1,6 +1,6 @@
 extern crate vectora;
 extern crate serde;
-extern crate init_trait;
+extern crate lazy_static;
 
 pub mod player_info;
 pub mod block;
