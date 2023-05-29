@@ -1,4 +1,4 @@
-use std::{ ops::Range, convert::TryInto };
+use std::{ ops::RangeInclusive, convert::TryInto };
 
 use lazy_static::lazy_static;
 
@@ -14,10 +14,7 @@ impl Team {
 }
 
 lazy_static! {
-  pub static ref TEAMS: [Team; 256] = (Range {
-    start: 0,
-    end: (u8::MAX as u16) + 1,
-  })
+  pub static ref TEAMS: [Team; 256] = RangeInclusive::new(0, u8::MAX)
     .map(|id| Team { id: id as u16 })
     .collect::<Vec<_>>()
     .try_into()
