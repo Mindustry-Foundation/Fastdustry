@@ -1,14 +1,13 @@
 use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{ tile::Tile, team::{ Team, TEAMS }, unit::Unit };
+use content::{ tile::Tile, team::{ Team, TEAMS } };
 use vectora::types::vector::Vector2d;
 
 extern crate bytebuffer;
 extern crate content;
 extern crate base64;
 extern crate vectora;
-#[macro_use]
 extern crate num_derive;
 extern crate num_traits;
 

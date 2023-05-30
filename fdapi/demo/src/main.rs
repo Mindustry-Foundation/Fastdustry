@@ -1,5 +1,4 @@
 use bytebuffer::ByteBuffer;
-use content::team::TEAMS;
 use proto::contract::packets::ClientSnapshotPacket;
 
 fn main() {
