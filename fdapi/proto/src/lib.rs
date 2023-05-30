@@ -94,5 +94,4 @@ trait ReadStruct<S> {
   fn read_struct(&mut self) -> Result<S, Error>;
 }
 
-
 pub mod contract;

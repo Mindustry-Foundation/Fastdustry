@@ -1,4 +1,4 @@
 #[derive(Debug, Default)]
 pub struct Unit {
-    id: u16
+  id: u16,
 }
