@@ -1,7 +1,4 @@
-use std::sync::atomic::{AtomicU16, Ordering};
 use lazy_static::lazy_static;
-
-static UNIT_TYPE_COUNTER: AtomicU16 = AtomicU16::new(0);
 
 #[derive(Debug, Default)]
 pub struct UnitType {
@@ -10,7 +7,11 @@ pub struct UnitType {
 
 impl UnitType {
   pub fn new() -> Self {
-    Self { id: UNIT_TYPE_COUNTER.fetch_add(1, Ordering::SeqCst) }
+    Self {
+      id: UNITS.last()
+        .map(|unit_type| unit_type.id)
+        .unwrap_or(0),
+    }
   }
 
   pub fn id(&self) -> u16 {
@@ -82,7 +83,5 @@ lazy_static! {
   pub static ref ASSEMBLY_DRONE: UnitType = UnitType::new();
   // pub static ref MISSILE: UnitType = UnitType::new(); // TODO: Я без понятия как это должно работать вообще
 
-  pub static ref UNITS: Vec<UnitType> = {
-    Vec::from([])
-  };
+  pub static ref UNITS: Vec<UnitType> = vec![];
 }

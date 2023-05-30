@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 
 #[derive(Debug, Default)]
 pub struct Team {
-  id: u16
+  id: u16,
 }
 
 impl Team {
