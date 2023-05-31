@@ -1,6 +1,6 @@
 extern crate vectora;
 extern crate serde;
-extern crate lazy_static;
+extern crate once_cell;
 
 pub mod player_info;
 pub mod block;

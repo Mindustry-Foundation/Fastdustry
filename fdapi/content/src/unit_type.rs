@@ -1,4 +1,4 @@
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 
 #[derive(Debug, Default)]
 pub struct UnitType {
@@ -8,7 +8,7 @@ pub struct UnitType {
 impl UnitType {
   pub fn new() -> Self {
     Self {
-      id: UNITS.last()
+      id: UNIT_TYPES.last()
         .map(|unit_type| unit_type.id)
         .unwrap_or(0),
     }
@@ -19,68 +19,130 @@ impl UnitType {
   }
 }
 
-lazy_static! {
-  static ref DAGGER: UnitType = UnitType::new();
-  static ref MACE: UnitType = UnitType::new();
-  static ref FORTRESS: UnitType = UnitType::new();
-  static ref SCEPTER: UnitType = UnitType::new();
-  static ref REIGN: UnitType = UnitType::new();
-  static ref NOVA: UnitType = UnitType::new();
-  static ref PULSAR: UnitType = UnitType::new();
-  static ref QUASAR: UnitType = UnitType::new();
-  static ref VELA: UnitType = UnitType::new();
-  static ref CORVUS: UnitType = UnitType::new();
-  static ref CRAWLER: UnitType = UnitType::new();
-  static ref ATRAX: UnitType = UnitType::new();
-  static ref SPIROCT: UnitType = UnitType::new();
-  static ref ARKYID: UnitType = UnitType::new();
-  static ref TOXOPID: UnitType = UnitType::new();
-  static ref FLARE: UnitType = UnitType::new();
-  static ref HORIZON: UnitType = UnitType::new();
-  static ref ZENITH: UnitType = UnitType::new();
-  static ref ANTUMBRA: UnitType = UnitType::new();
-  static ref ECLIPSE: UnitType = UnitType::new();
-  static ref MONO: UnitType = UnitType::new();
-  static ref POLY: UnitType = UnitType::new();
-  static ref MEGA: UnitType = UnitType::new();
-  static ref QUAD: UnitType = UnitType::new();
-  static ref OCT: UnitType = UnitType::new();
-  static ref RISSO: UnitType = UnitType::new();
-  static ref MINKE: UnitType = UnitType::new();
-  static ref BRYDE: UnitType = UnitType::new();
-  static ref SEI: UnitType = UnitType::new();
-  static ref OMURA: UnitType = UnitType::new();
-  static ref RETUSA: UnitType = UnitType::new();
-  static ref OXYNOE: UnitType = UnitType::new();
-  static ref CYERCE: UnitType = UnitType::new();
-  static ref AEGIRES: UnitType = UnitType::new();
-  static ref NAVANAX: UnitType = UnitType::new();
-  static ref ALPHA: UnitType = UnitType::new();
-  static ref BETA: UnitType = UnitType::new();
-  static ref GAMMA: UnitType = UnitType::new();
-  static ref STELL: UnitType = UnitType::new();
-  static ref LOCUS: UnitType = UnitType::new();
-  static ref PRECEPT: UnitType = UnitType::new();
-  static ref VANQUISH: UnitType = UnitType::new();
-  static ref CONQUER: UnitType = UnitType::new();
-  static ref MERUI: UnitType = UnitType::new();
-  static ref CLEROI: UnitType = UnitType::new();
-  static ref ANTHICUS: UnitType = UnitType::new();
-  static ref TECTA: UnitType = UnitType::new();
-  static ref COLLARIS: UnitType = UnitType::new();
-  static ref ELUDE: UnitType = UnitType::new();
-  static ref AVERT: UnitType = UnitType::new();
-  static ref OBVIATE: UnitType = UnitType::new();
-  static ref QUELL: UnitType = UnitType::new();
-  static ref DISRUPT: UnitType = UnitType::new();
-  static ref RENALE: UnitType = UnitType::new();
-  static ref LATUM: UnitType = UnitType::new();
-  static ref EVOKE: UnitType = UnitType::new();
-  static ref INCITE: UnitType = UnitType::new();
-  static ref EMANATE: UnitType = UnitType::new();
-  static ref BLOCK: UnitType = UnitType::new();
-  static ref MANIFOLD: UnitType = UnitType::new();
-  static ref ASSEMBLY_DRONE: UnitType = UnitType::new();
+pub static DAGGER: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static MACE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static FORTRESS: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static SCEPTER: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static REIGN: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static NOVA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static PULSAR: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static QUASAR: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static VELA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static CORVUS: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static CRAWLER: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ATRAX: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static SPIROCT: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ARKYID: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static TOXOPID: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static FLARE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static HORIZON: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ZENITH: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ANTUMBRA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ECLIPSE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static MONO: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static POLY: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static MEGA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static QUAD: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static OCT: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static RISSO: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static MINKE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static BRYDE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static SEI: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static OMURA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static RETUSA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static OXYNOE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static CYERCE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static AEGIRES: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static NAVANAX: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ALPHA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static BETA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static GAMMA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static STELL: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static LOCUS: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static PRECEPT: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static VANQUISH: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static CONQUER: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static MERUI: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static CLEROI: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ANTHICUS: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static TECTA: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static COLLARIS: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ELUDE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static AVERT: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static OBVIATE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static QUELL: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static DISRUPT: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static RENALE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static LATUM: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static EVOKE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static INCITE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static EMANATE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static BLOCK: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static MANIFOLD: Lazy<UnitType> = Lazy::new(|| UnitType::new());
+pub static ASSEMBLY_DRONE: Lazy<UnitType> = Lazy::new(|| UnitType::new());
 
-  pub static ref UNITS: Vec<UnitType> = vec![];
-}
+pub static UNIT_TYPES: Lazy<Vec<&UnitType>> = Lazy::new(||
+  vec![
+    &DAGGER,
+    &MACE,
+    &FORTRESS,
+    &SCEPTER,
+    &REIGN,
+    &NOVA,
+    &PULSAR,
+    &QUASAR,
+    &VELA,
+    &CORVUS,
+    &CRAWLER,
+    &ATRAX,
+    &SPIROCT,
+    &ARKYID,
+    &TOXOPID,
+    &FLARE,
+    &HORIZON,
+    &ZENITH,
+    &ANTUMBRA,
+    &ECLIPSE,
+    &MONO,
+    &POLY,
+    &MEGA,
+    &QUAD,
+    &OCT,
+    &RISSO,
+    &MINKE,
+    &BRYDE,
+    &SEI,
+    &OMURA,
+    &RETUSA,
+    &OXYNOE,
+    &CYERCE,
+    &AEGIRES,
+    &NAVANAX,
+    &ALPHA,
+    &BETA,
+    &GAMMA,
+    &STELL,
+    &LOCUS,
+    &PRECEPT,
+    &VANQUISH,
+    &CONQUER,
+    &MERUI,
+    &CLEROI,
+    &ANTHICUS,
+    &TECTA,
+    &COLLARIS,
+    &ELUDE,
+    &AVERT,
+    &OBVIATE,
+    &QUELL,
+    &DISRUPT,
+    &RENALE,
+    &LATUM,
+    &EVOKE,
+    &INCITE,
+    &EMANATE,
+    &BLOCK,
+    &MANIFOLD,
+    &ASSEMBLY_DRONE
+  ]
+);

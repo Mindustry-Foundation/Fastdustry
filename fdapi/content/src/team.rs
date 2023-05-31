@@ -1,6 +1,6 @@
 use std::ops::RangeInclusive;
 
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 
 #[derive(Debug, Default)]
 pub struct Team {
@@ -17,8 +17,8 @@ impl Team {
   }
 }
 
-lazy_static! {
-  pub static ref TEAMS: Vec<Team> = RangeInclusive::new(0, u8::MAX)
+pub static TEAMS: Lazy<Vec<Team>> = Lazy::new(||
+  RangeInclusive::new(0, u8::MAX)
     .map(|id| Team::new(id as u16))
-    .collect();
-}
+    .collect()
+);
