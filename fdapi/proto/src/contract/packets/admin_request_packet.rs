@@ -37,7 +37,6 @@ impl TryFrom<&Vec<u8>> for AdminRequestPacket {
 impl Into<Vec<u8>> for AdminRequestPacket {
   fn into(self) -> Vec<u8> {
     let mut byte_buffer = ByteBuffer::new();
-
     byte_buffer.write_u16(self.player_id);
     byte_buffer.write_u8(self.action as u8);
     byte_buffer.into_vec()

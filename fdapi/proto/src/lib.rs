@@ -1,7 +1,7 @@
 use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{ tile::Tile, team::{ Team, TEAMS } };
+use content::{ tile::Tile, team::{ Team, TEAMS }, unit::{ Unit, UNITS } };
 use vectora::types::vector::Vector2d;
 
 extern crate bytebuffer;
@@ -44,6 +44,12 @@ impl WriteStruct<&Team> for ByteBuffer {
   }
 }
 
+impl WriteStruct<&Unit> for ByteBuffer {
+  fn write_struct(&mut self, val: &Unit) {
+    self.write_u16(val.id())
+  }
+}
+
 impl ReadStruct<Vector2d<u32>> for ByteBuffer {
   fn read_struct(&mut self) -> Result<Vector2d<u32>, Error> {
     Ok(Vector2d::from([self.read_u32()?, self.read_u32()?]))
@@ -81,6 +87,16 @@ impl<'a> ReadStruct<&'a Team> for ByteBuffer {
 
     TEAMS.get(team_id as usize).ok_or(
       Error::new(ErrorKind::NotFound, format!("team with id {id} does not exist", id = team_id))
+    )
+  }
+}
+
+impl<'a> ReadStruct<&'a Unit> for ByteBuffer {
+  fn read_struct(&mut self) -> Result<&'a Unit, Error> {
+    let unit_id = self.read_u8()?;
+
+    UNITS.get(unit_id as usize).ok_or(
+      Error::new(ErrorKind::NotFound, format!("unit with id {id} does not exist", id = unit_id))
     )
   }
 }

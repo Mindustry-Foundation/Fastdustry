@@ -17,11 +17,14 @@ impl TryFrom<&Vec<u8>> for StreamBegin {
 
   fn try_from(byte_vector: &Vec<u8>) -> Result<Self, Self::Error> {
     let mut byte_buffer = ByteBuffer::from_bytes(byte_vector);
+    let id = byte_buffer.read_u32()?;
+    let total = byte_buffer.read_u32()?;
+    let stream_type = byte_buffer.read_u8()?;
 
     Ok(StreamBegin {
-      id: byte_buffer.read_u32()?,
-      total: byte_buffer.read_u32()?,
-      stream_type: byte_buffer.read_u8()?,
+      id,
+      total,
+      stream_type,
     })
   }
 }
