@@ -1,5 +1,5 @@
 use std::{ convert::TryFrom, io::Error };
-use crate::contract::registries::Registries
+use crate::contract::registries::Registries;
 
 pub use super::packets::admin_request_packet::*;
 pub use super::packets::announce_packet::*;
