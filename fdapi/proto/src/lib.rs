@@ -1,7 +1,8 @@
 use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{ tile::Tile, team::{ Team, TEAMS } };
+use content::{ tile::Tile, team::Team, WithId, Registry };
+use contract::packets::Packet;
 use vectora::types::vector::Vector2d;
 
 extern crate bytebuffer;
@@ -10,6 +11,10 @@ extern crate base64;
 extern crate vectora;
 extern crate num_derive;
 extern crate num_traits;
+
+pub struct Registries<'a> {
+  plugins: Registry<dyn Packet>
+}
 
 impl WriteStruct<&Vector2d<u32>> for ByteBuffer {
   fn write_struct(&mut self, val: &Vector2d<u32>) {

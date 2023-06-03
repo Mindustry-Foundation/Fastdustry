@@ -10,6 +10,8 @@ path = "src/lib.rs"
 crate-type = ["lib"]
 
 [dependencies]
+memoize = "0.4.0"
 once_cell = "1.17.2"
 serde = { version = "1.0.163", features = ["derive"] }
+unique_id = "0.1.5"
 vectora = "0.8.1"

@@ -1,17 +1,17 @@
 use crate::WithId;
 
 #[derive(Debug, Default)]
-pub struct ItemType {
+pub struct UnitType {
   id: u16
 }
 
-impl ItemType {
+impl UnitType {
   pub fn new() -> Self {
     Self::default()
   }
 }
 
-impl WithId for ItemType {
+impl WithId for UnitType {
   fn id(&self) -> u16 {
     self.id
   }
@@ -20,5 +20,3 @@ impl WithId for ItemType {
     self.id = id;
   }
 }
-
-pub trait Item {}

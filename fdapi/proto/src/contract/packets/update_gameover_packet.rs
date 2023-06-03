@@ -1,6 +1,6 @@
 use std::{ convert::TryFrom, io::Error };
 use bytebuffer::ByteBuffer;
-use content::team::{ Team, TEAMS };
+use content::team::{ Team };
 use crate::{ ReadStruct, WriteStruct };
 
 use super::Packet;

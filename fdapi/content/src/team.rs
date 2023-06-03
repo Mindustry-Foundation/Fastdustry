@@ -1,6 +1,4 @@
-use std::ops::RangeInclusive;
-
-use once_cell::sync::Lazy;
+use crate::WithId;
 
 #[derive(Debug, Default)]
 pub struct Team {
@@ -8,17 +6,17 @@ pub struct Team {
 }
 
 impl Team {
-  pub fn new(id: u16) -> Self {
-    Self { id }
-  }
-
-  pub fn id(&self) -> u16 {
-    self.id
+  pub fn new() -> Self {
+    Self::default()
   }
 }
 
-pub static TEAMS: Lazy<Vec<Team>> = Lazy::new(||
-  RangeInclusive::new(0, u8::MAX)
-    .map(|id| Team::new(id as u16))
-    .collect()
-);
+impl WithId for Team {
+  fn id(&self) -> u16 {
+    self.id
+  }
+
+  fn set_id(&mut self, id: u16) {
+    self.id = id;
+  }
+}
