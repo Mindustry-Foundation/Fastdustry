@@ -1,4 +1,5 @@
 use std::{ convert::TryFrom, io::Error };
+use crate::contract::registries::Registries
 
 pub use super::packets::admin_request_packet::*;
 pub use super::packets::announce_packet::*;
@@ -43,4 +44,8 @@ mod world_data_begin;
 mod warning_toast_packet;
 mod update_gameover_packet;
 
-pub trait Packet: for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> + Default {}
+pub trait Packet: for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> + Default {
+  fn from(context: Registries) {
+    todo!()
+  }
+}
