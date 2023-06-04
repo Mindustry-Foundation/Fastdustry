@@ -1,7 +1,7 @@
 use crate::WithId;
 
 pub trait Block {
-  fn block_type() -> BlockType;
+  fn r#type(&self) -> BlockType;
 }
 
 #[derive(Debug, Default)]

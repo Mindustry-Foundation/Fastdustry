@@ -1,7 +1,7 @@
 use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{ tile::Tile, team::Team, WithId, Registry };
+use content::{ tile::Tile, team::Team, WithId, Registry, unit::Unit };
 use contract::packets::Packet;
 use vectora::types::vector::Vector2d;
 
@@ -11,10 +11,6 @@ extern crate base64;
 extern crate vectora;
 extern crate num_derive;
 extern crate num_traits;
-
-pub struct Registries<'a> {
-  plugins: Registry<dyn Packet>
-}
 
 impl WriteStruct<&Vector2d<u32>> for ByteBuffer {
   fn write_struct(&mut self, val: &Vector2d<u32>) {
@@ -37,8 +33,8 @@ impl WriteStruct<&String> for ByteBuffer {
   }
 }
 
-impl WriteStruct<&Tile> for ByteBuffer {
-  fn write_struct(&mut self, val: &Tile) {
+impl WriteStruct<&dyn Tile> for ByteBuffer {
+  fn write_struct(&mut self, val: &dyn Tile) {
     self.write_struct(&val.pos)
   }
 }
@@ -49,8 +45,8 @@ impl WriteStruct<&Team> for ByteBuffer {
   }
 }
 
-impl WriteStruct<&Unit> for ByteBuffer {
-  fn write_struct(&mut self, val: &Unit) {
+impl WriteStruct<&dyn Unit> for ByteBuffer {
+  fn write_struct(&mut self, val: &dyn Unit) {
     self.write_u16(val.id())
   }
 }
@@ -78,8 +74,8 @@ impl ReadStruct<String> for ByteBuffer {
   }
 }
 
-impl ReadStruct<Tile> for ByteBuffer {
-  fn read_struct(&mut self) -> Result<Tile, Error> {
+impl ReadStruct<dyn Tile> for ByteBuffer {
+  fn read_struct(&mut self) -> Result<dyn Tile, Error> {
     Ok(Tile {
       pos: self.read_struct()?,
     })
