@@ -1,6 +1,6 @@
 pub trait WithId {
+  fn new(id: u16) -> Self;
   fn id(&self) -> u16;
-  fn set_id(&mut self, id: u16);
 }
 
 #[derive(Debug, Default)]
@@ -13,9 +13,11 @@ impl<F> Registry<F> where F: WithId + Default {
     Self::default()
   }
 
-  pub fn register(&mut self, mut entry: F) {
-    entry.set_id(self.entries.len() as u16);
+  pub fn register(&mut self) -> &F {
+    let index = self.entries.len();
+    let entry = F::new(index as u16);
 
     self.entries.push(entry);
+    self.entries.get(index).unwrap()
   }
 }

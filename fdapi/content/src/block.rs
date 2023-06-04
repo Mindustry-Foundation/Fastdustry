@@ -1,8 +1,8 @@
-use std::fmt::Formatter;
-
 use crate::WithId;
 
-pub trait Block {}
+pub trait Block {
+  fn block_type() -> BlockType;
+}
 
 #[derive(Debug, Default)]
 pub struct BlockType {
@@ -16,21 +16,11 @@ impl BlockType {
 }
 
 impl WithId for BlockType {
+  fn new(id: u16) -> Self {
+    Self { id }
+  }
+
   fn id(&self) -> u16 {
     self.id
-  }
-
-  fn set_id(&mut self, id: u16) {
-    self.id = id;
-  }
-}
-
-pub struct BlockPlan<'a> {
-  pub block: &'a dyn Block,
-}
-
-impl<'a> std::fmt::Debug for BlockPlan<'a> {
-  fn fmt(&self, formatter: &mut Formatter<'_>) -> std::fmt::Result {
-    formatter.debug_struct("BlockPlan").finish()
   }
 }
