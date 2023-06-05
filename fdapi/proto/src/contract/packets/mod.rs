@@ -42,6 +42,5 @@ mod client_snapshot_packet;
 mod world_data_begin;
 mod warning_toast_packet;
 mod update_gameover_packet;
-pub mod packets;
 
 pub trait Packet: for<'f> TryFrom<&'f Vec<u8>, Error = Error> + Into<Vec<u8>> + Default {}
