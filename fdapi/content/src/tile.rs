@@ -1,26 +1,11 @@
-use crate::WithId;
+use vectora::types::vector::Vector2d;
 
-pub trait Tile {
-  fn r#type(&self) -> TileType;
+pub struct Tile {
+  pos: Vector2d<i32>
 }
 
-#[derive(Debug, Default)]
-pub struct TileType {
-  id: u16
-}
-
-impl TileType {
-  pub fn new() -> Self {
-    Self::default()
-  }
-}
-
-impl WithId for TileType {
-  fn new(id: u16) -> Self {
-    Self { id }
-  }
-
-  fn id(&self) -> u16 {
-    self.id
+impl Tile {
+  pub fn pos(&self) -> Vector2d<i32> {
+    self.pos
   }
 }

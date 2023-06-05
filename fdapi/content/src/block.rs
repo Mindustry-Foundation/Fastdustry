@@ -1,8 +1,9 @@
-use crate::WithId;
-
 pub trait Block {
   fn r#type(&self) -> BlockType;
 }
+
+#[derive(Debug, Default)]
+pub struct BlockPlan {}
 
 #[derive(Debug, Default)]
 pub struct BlockType {
@@ -12,15 +13,5 @@ pub struct BlockType {
 impl BlockType {
   pub fn new() -> Self {
     Self::default()
-  }
-}
-
-impl WithId for BlockType {
-  fn new(id: u16) -> Self {
-    Self { id }
-  }
-
-  fn id(&self) -> u16 {
-    self.id
   }
 }

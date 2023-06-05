@@ -1,4 +1,9 @@
-use crate::WithId;
+use std::sync::{Mutex, atomic::{AtomicU16, Ordering}};
+
+use once_cell::sync::Lazy;
+
+pub static TEAMS: Lazy<Mutex<Vec<Team>>> = Lazy::new(|| vec![].into());
+static NEXT_TEAM_ID: AtomicU16 = AtomicU16::new(0);
 
 #[derive(Debug, Default)]
 pub struct Team {
@@ -9,14 +14,13 @@ impl Team {
   pub fn new() -> Self {
     Self::default()
   }
-}
 
-impl WithId for Team {
-  fn new(id: u16) -> Self {
-    Self { id }
+  pub fn register(mut self) {
+    self.id = NEXT_TEAM_ID.fetch_add(1, Ordering::Relaxed);
+    TEAMS.lock().unwrap().push(self);
   }
 
-  fn id(&self) -> u16 {
+  pub fn id(&self) -> u16 {
     self.id
   }
 }

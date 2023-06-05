@@ -1,5 +1,3 @@
-use crate::WithId;
-
 pub trait Fluid {
   fn r#type(&self) -> FluidType;
 }
@@ -12,15 +10,5 @@ pub struct FluidType {
 impl FluidType {
   pub fn new() -> Self {
     Self::default()
-  }
-}
-
-impl WithId for FluidType {
-  fn new(id: u16) -> Self {
-    Self { id }
-  }
-
-  fn id(&self) -> u16 {
-    self.id
   }
 }

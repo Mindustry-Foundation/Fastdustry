@@ -1,4 +1,5 @@
 use bytebuffer::ByteBuffer;
+use content::unit::UnitType;
 use proto::contract::packets::ClientSnapshotPacket;
 
 fn main() {
@@ -83,5 +84,22 @@ fn main() {
 
   let c = ClientSnapshotPacket::try_from(&buf.into_vec()).unwrap();
 
+  let a = UnitType::new();
+
+  UnitType::register(a);
+
+  aa(a);
+
+  let c = UnitType::new();
+
+  c.register();
+
+  let b = c;
+  let n = c;
+
   println!("Hello, world! {:?}", c);
+}
+
+fn aa(unit: UnitType) {
+
 }

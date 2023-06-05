@@ -1,8 +1,7 @@
 use std::io::{ Error, ErrorKind };
 
 use bytebuffer::ByteBuffer;
-use content::{ tile::Tile, team::Team, WithId, Registry, unit::Unit };
-use contract::packets::Packet;
+use content::{ team::{Team, TEAMS}, unit::{UNIT_TYPES, UnitType} };
 use vectora::types::vector::Vector2d;
 
 extern crate bytebuffer;
@@ -33,20 +32,14 @@ impl WriteStruct<&String> for ByteBuffer {
   }
 }
 
-impl WriteStruct<&dyn Tile> for ByteBuffer {
-  fn write_struct(&mut self, val: &dyn Tile) {
-    self.write_struct(&val.pos)
-  }
-}
-
 impl WriteStruct<&Team> for ByteBuffer {
   fn write_struct(&mut self, val: &Team) {
     self.write_u16(val.id())
   }
 }
 
-impl WriteStruct<&dyn Unit> for ByteBuffer {
-  fn write_struct(&mut self, val: &dyn Unit) {
+impl WriteStruct<&UnitType> for ByteBuffer {
+  fn write_struct(&mut self, val: &UnitType) {
     self.write_u16(val.id())
   }
 }
@@ -74,31 +67,28 @@ impl ReadStruct<String> for ByteBuffer {
   }
 }
 
-impl ReadStruct<dyn Tile> for ByteBuffer {
-  fn read_struct(&mut self) -> Result<dyn Tile, Error> {
-    Ok(Tile {
-      pos: self.read_struct()?,
-    })
-  }
-}
-
 impl<'a> ReadStruct<&'a Team> for ByteBuffer {
   fn read_struct(&mut self) -> Result<&'a Team, Error> {
     let team_id = self.read_u8()?;
 
-    TEAMS.get(team_id as usize).ok_or(
-      Error::new(ErrorKind::NotFound, format!("team with id {id} does not exist", id = team_id))
-    )
+    TEAMS.lock()
+      .unwrap()
+      .get(team_id as usize)
+      .ok_or(
+        Error::new(ErrorKind::NotFound, format!("team with id {id} does not exist", id = team_id))
+      )
   }
 }
 
-impl<'a> ReadStruct<&'a Unit> for ByteBuffer {
-  fn read_struct(&mut self) -> Result<&'a Unit, Error> {
+impl<'a> ReadStruct<&'a UnitType> for ByteBuffer {
+  fn read_struct(&mut self) -> Result<&'a UnitType, Error> {
     let unit_id = self.read_u8()?;
 
-    UNITS.get(unit_id as usize).ok_or(
-      Error::new(ErrorKind::NotFound, format!("unit with id {id} does not exist", id = unit_id))
-    )
+    UNIT_TYPES.lock()
+      .unwrap()
+      .get(unit_id as usize).ok_or(
+        Error::new(ErrorKind::NotFound, format!("unit with id {id} does not exist", id = unit_id))
+      )
   }
 }
 

@@ -1,6 +1,6 @@
 use std::{ convert::TryFrom, io::Error };
 use bytebuffer::ByteBuffer;
-use content::team::{ Team };
+use content::team::{ Team, TEAMS };
 use crate::{ ReadStruct, WriteStruct };
 
 use super::Packet;
@@ -36,7 +36,10 @@ impl Into<Vec<u8>> for UpdateGameoverPacket<'_> {
 impl Default for UpdateGameoverPacket<'_> {
   fn default() -> Self {
     Self {
-      win_team: TEAMS.get(0).unwrap(),
+      win_team: TEAMS.lock()
+        .unwrap()
+        .get(0)
+        .unwrap(),
     }
   }
 }

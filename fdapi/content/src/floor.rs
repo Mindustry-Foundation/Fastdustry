@@ -1,5 +1,3 @@
-use crate::WithId;
-
 pub trait Floor {
   fn r#type(&self) -> FloorType;
 }
@@ -12,15 +10,5 @@ pub struct FloorType {
 impl FloorType {
   pub fn new() -> Self {
     Self::default()
-  }
-}
-
-impl WithId for FloorType {
-  fn new(id: u16) -> Self {
-    Self { id }
-  }
-
-  fn id(&self) -> u16 {
-    self.id
   }
 }

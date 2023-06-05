@@ -1,6 +1,6 @@
 use std::{ convert::TryFrom, io::Error };
 use bytebuffer::ByteBuffer;
-use content::{ unit::{Unit, UNITS}, team::{Team, TEAMS} };
+use content::{ unit::{Unit, UNIT_TYPES}, team::{Team, TEAMS} };
 use crate::{ReadStruct, WriteStruct};
 use super::Packet;
 
@@ -40,8 +40,11 @@ impl Into<Vec<u8>> for BeginPlacePacket<'_> {
 impl Default for BeginPlacePacket<'_> {
   fn default() -> Self {
     Self {
-      unit: UNITS.get(0).unwrap(),
-      team: TEAMS.get(0).unwrap(),
+      unit: UNIT_TYPES.get(0).unwrap(),
+      team: TEAMS.lock()
+        .unwrap()
+        .get(0)
+        .unwrap(),
       x: 1,
       y: 1,
     }

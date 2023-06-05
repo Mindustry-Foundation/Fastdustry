@@ -8,7 +8,7 @@ use crate::{ ReadStruct, WriteStruct };
 use super::Packet;
 
 #[derive(Debug, Default)]
-pub struct ClientSnapshotPacket<'a> {
+pub struct ClientSnapshotPacket {
   pub snapshot_id: u32,
   pub mining_pos: i32,
   pub unit_id: u32,
@@ -19,7 +19,7 @@ pub struct ClientSnapshotPacket<'a> {
   pub velocity: Vector2d<f32>,
   pub rotation: f32,
   pub base_rotation: f32,
-  pub plans: VecDeque<BlockPlan<'a>>,
+  pub plans: VecDeque<BlockPlan>,
   pub dead: bool,
   pub boosting: bool,
   pub shooting: bool,
@@ -27,9 +27,9 @@ pub struct ClientSnapshotPacket<'a> {
   pub building: bool,
 }
 
-impl Packet for ClientSnapshotPacket<'_> {}
+impl Packet for ClientSnapshotPacket {}
 
-impl TryFrom<&Vec<u8>> for ClientSnapshotPacket<'_> {
+impl TryFrom<&Vec<u8>> for ClientSnapshotPacket {
   type Error = Error;
 
   fn try_from(byte_vector: &Vec<u8>) -> Result<Self, Self::Error> {
@@ -56,7 +56,7 @@ impl TryFrom<&Vec<u8>> for ClientSnapshotPacket<'_> {
   }
 }
 
-impl Into<Vec<u8>> for ClientSnapshotPacket<'_> {
+impl Into<Vec<u8>> for ClientSnapshotPacket {
   fn into(self) -> Vec<u8> {
     let mut byte_buffer = ByteBuffer::new();
 

@@ -11,6 +11,7 @@ impl Packet for AnnouncePacket {}
 
 impl TryFrom<&Vec<u8>> for AnnouncePacket {
   type Error = Error;
+
   fn try_from(byte_vector: &Vec<u8>) -> Result<Self, Self::Error> {
     let mut byte_buffer = ByteBuffer::from_bytes(byte_vector);
     let message = byte_buffer.read_struct()?;
