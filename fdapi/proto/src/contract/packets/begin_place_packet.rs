@@ -1,12 +1,12 @@
 use std::{ convert::TryFrom, io::Error };
 use bytebuffer::ByteBuffer;
-use content::{ unit::{Unit, UNIT_TYPES}, team::{Team, TEAMS} };
+use content::{ unit::{ UNIT_TYPES, UnitType }, team::{ Team, TEAMS } };
 use crate::{ ReadStruct, WriteStruct };
 use super::Packet;
 
 #[derive(Debug)]
 pub struct BeginPlacePacket<'a> {
-  unit: &'a Unit,
+  unit: &'a UnitType, //Unit
   block: u16, //id блока, потом переделать
   team: &'a Team,
   x: u32,
@@ -49,11 +49,8 @@ impl Into<Vec<u8>> for BeginPlacePacket<'_> {
 impl Default for BeginPlacePacket<'_> {
   fn default() -> Self {
     Self {
-      unit: UNIT_TYPES.get(0).unwrap(),
-      team: TEAMS.lock()
-        .unwrap()
-        .get(0)
-        .unwrap(),
+      unit: UNIT_TYPES.lock().unwrap().get(0).unwrap(),
+      team: TEAMS.lock().unwrap().get(0).unwrap(),
       block: 1,
       x: 1,
       y: 1,

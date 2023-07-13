@@ -1,7 +1,7 @@
 use std::{ convert::TryFrom, io::Error };
 
 use bytebuffer::ByteBuffer;
-use content::tile::Tile;
+use vectora::types::vector::Vector2d;
 
 use crate::{ WriteStruct, ReadStruct };
 
@@ -9,7 +9,7 @@ use super::Packet;
 
 #[derive(Debug, Default)]
 pub struct AssemblerUnitSpawnedPacket {
-  tile: Tile,
+  tile: Vector2d<i32>, //tile
 }
 
 impl Packet for AssemblerUnitSpawnedPacket {}

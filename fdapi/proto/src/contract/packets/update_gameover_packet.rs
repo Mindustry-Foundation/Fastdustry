@@ -36,10 +36,10 @@ impl Into<Vec<u8>> for UpdateGameoverPacket<'_> {
 impl Default for UpdateGameoverPacket<'_> {
   fn default() -> Self {
     Self {
-      win_team: TEAMS.lock()
-        .unwrap()
-        .get(0)
-        .unwrap(),
+      // win_team: TEAMS.lock()
+      //  .unwrap()
+      //  .get(0)
+      //.unwrap(),
     }
   }
 }

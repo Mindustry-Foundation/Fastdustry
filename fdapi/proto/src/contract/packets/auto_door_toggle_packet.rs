@@ -2,6 +2,7 @@ use std::{ convert::TryFrom, io::Error };
 
 use bytebuffer::ByteBuffer;
 use content::tile::Tile;
+use vectora::types::vector::Vector2d;
 
 use crate::{ ReadStruct, WriteStruct };
 
@@ -9,7 +10,7 @@ use super::Packet;
 
 #[derive(Debug, Default)]
 pub struct AutoDoorTogglePacket {
-  tile: Tile,
+  tile: Vector2d<i32>, //Tile
   open: bool,
 }
 
