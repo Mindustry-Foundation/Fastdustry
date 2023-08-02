@@ -12,7 +12,7 @@ pipelines:
           - cd fastdustry.git
           - git push --mirror git@github.com:Mindustry-Foundation/Fastdustry.git
     - step:
-        name: "Build and Test"
+        name: "Build -> Test -> Release Artifacts"
         caches:
           - cargo
           - rust-target
@@ -20,21 +20,12 @@ pipelines:
           - echo "Setup git with read/write access"   ; sh scripts/setup-git.sh
           - echo "Testing code"                       ; cargo test
           - echo "Building libs and applications"     ; cargo build --release
-    - step:
-        name: "Release Artifacts"
-        caches:
-          - cargo
-          - rust-target
-        script:
-          - echo "Setup git with read/write access"   ; sh scripts/setup-git.sh
-          - echo "Testing code"                       ; cargo test
-          - echo "Building libs and applications"     ; cargo build --release
-          - pipe: atlassian/bitbucket-upload-file:0.3.4
+          - pipe: atlassian/bitbucket-upload-file:0.4.0
             variables:
               BITBUCKET_USERNAME: SSTentacleSS
               BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
               FILENAME: "$BITBUCKET_CLONE_DIR/target/release/*.rlib"
-          - pipe: atlassian/bitbucket-upload-file:0.3.4
+          - pipe: atlassian/bitbucket-upload-file:0.4.0
             variables:
               BITBUCKET_USERNAME: SSTentacleSS
               BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
