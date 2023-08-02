@@ -1,9 +1,0 @@
-[package]
-name = "fastdustry-demo"
-version = "0.0.1"
-edition = "2021"
-
-[dependencies]
-fastdustry-proto = { path = "../proto" }
-fastdustry-content = { path = "../content" }
-bytebuffer = "2.1.1"
