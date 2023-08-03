@@ -7,8 +7,9 @@ pub mod liquid;
 pub mod item;
 pub mod bullet;
 pub mod block;
+pub mod rules;
 
-extern crate brood;
+extern crate specs;
 extern crate nalgebra;
 extern crate palette;
 
