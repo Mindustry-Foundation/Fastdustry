@@ -16,5 +16,4 @@ nalgebra = { version = "0.32.3" }
 serde = { version = "1.0.177", features = ["derive", "alloc"], optional = true }
 
 [features]
-default = ["serde"]
 serde = ["dep:serde", "brood/serde", "palette/serde", "nalgebra/serde", "nalgebra/serde-serialize"]
