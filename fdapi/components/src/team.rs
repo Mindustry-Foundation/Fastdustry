@@ -1,5 +1,7 @@
 use palette::Srgba;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct Team {
   color: Srgba,
 }
