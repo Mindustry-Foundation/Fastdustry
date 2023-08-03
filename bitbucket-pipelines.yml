@@ -25,11 +25,11 @@ pipelines:
               BITBUCKET_USERNAME: SSTentacleSS
               BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
               FILENAME: "$BITBUCKET_CLONE_DIR/target/release/*.rlib"
-          - pipe: atlassian/bitbucket-upload-file:0.4.0
-            variables:
-              BITBUCKET_USERNAME: SSTentacleSS
-              BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
-              FILENAME: "$BITBUCKET_CLONE_DIR/target/release/fastdustry-demo"
+          # - pipe: atlassian/bitbucket-upload-file:0.4.0
+          #   variables:
+          #     BITBUCKET_USERNAME: SSTentacleSS
+          #     BITBUCKET_APP_PASSWORD: $BITBUCKET_DEPLOY_PASSWORD
+          #     FILENAME: "$BITBUCKET_CLONE_DIR/target/release/fastdustry-demo"
 definitions:
   caches:
     cargo: /usr/local/cargo
