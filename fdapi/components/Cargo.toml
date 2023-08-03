@@ -1,11 +1,11 @@
 [package]
-name = "fastdustry-content"
+name = "fastdustry-components"
 version = "0.0.1"
 authors = ["OSPx", "Ademun", "SSTentacleSS"]
-description = "A module that implements basic Mindustry content"
+description = "A module that implements basic Mindustry components"
 
 [lib]
-name = "content"
+name = "components"
 path = "src/lib.rs"
 crate-type = ["lib"]
 
