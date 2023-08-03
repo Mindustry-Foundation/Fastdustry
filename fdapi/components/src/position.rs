@@ -1,10 +1,13 @@
+#[cfg(feature = "serde")]
 use serde::{ Deserialize, Serialize };
 use nalgebra::Vector2;
 
-#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Position(Vector2<u32>);
 
-#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Velocity(Position);
 
 impl Position {

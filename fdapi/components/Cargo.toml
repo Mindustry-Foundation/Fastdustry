@@ -10,7 +10,11 @@ path = "src/lib.rs"
 crate-type = ["lib"]
 
 [dependencies]
-brood = { version = "0.9.0", features = ["serde"] }
-serde = { version = "1.0.163", features = ["derive"] }
-palette = { version = "0.7.2", features = ["serde"] }
-nalgebra = { version = "0.32.2", features = ["serde", "serde-serialize"] }
+brood = { version = "0.9.0" }
+palette = { version = "0.7.2" }
+nalgebra = { version = "0.32.3" }
+serde = { version = "1.0.177", features = ["derive", "alloc"], optional = true }
+
+[features]
+default = ["serde"]
+serde = ["dep:serde", "brood/serde", "palette/serde", "nalgebra/serde", "nalgebra/serde-serialize"]
