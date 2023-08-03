@@ -1,5 +1,5 @@
 [workspace]
-members = ["fdapi/demo", "fdapi/content"]
+members = ["fdapi/content"]
 
 [profile.release]
 opt-level = 'z'
